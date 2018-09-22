@@ -95,4 +95,43 @@ for t in vgg(contentImg, content_layers):
     t = t.detach()
     contentTargets.append(t)
 
-style_Losses = []
+style_Losses = [styleLoss()] * len(style_layers)
+
+content_Losses = [nn.MSELoss()] * len(content_layers)
+
+# We only need to go through the vgg once to get all style and content losses
+
+losses = style_Losses + content_Losses
+targets = styleTargets + contentTargets
+loss_layers = style_layers + content_layers
+weights = 0.5 * len(style_layers) + 0.5 * len(content_layers)
+
+optimImg = Variable(contentImg.data.clone(), requires_grad=True)
+optimizer = optim.LBFGS([optimImg])
+
+#Shifting everything to cuda
+for loss in losses:
+    loss = loss.cuda()
+optimImg.cuda()
+
+# Training
+no_iter = 1000
+
+for iteration in range(1, no_iter):
+    print('Iteration [%d]/[%d]'%(iteration,no_iter))
+    def cl():
+        optimizer.zero_grad()
+        out = vgg(optimImg, loss_layers)
+        totalLossList = []
+        for i in range(len(out)):
+            layer_output = out[i]
+            loss_i = losses[i]
+            target_i = targets[i]
+            totalLossList.append(loss_i(layer_output, target_i) * weights[i])
+        totalLoss = sum(totalLossList)
+        totalLoss.backward()
+        print('Loss: %f'%(totalLoss.data[0]))
+        return totalLoss
+    optimizer.step(cl)
+outImg = optimImg.data[0].cpu()
+save_img(outImg.squeeze())    
