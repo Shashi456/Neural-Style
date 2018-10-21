@@ -33,7 +33,7 @@ transform = tf.Compose([
     tf.Resize(512), #Default image_size
     tf.ToTensor(), #Transform it to a torch tensor
     tf.Lambda(lambda x:x[torch.LongTensor([2, 1,0])]), #Converting from RGB to BGR
-    tf.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], std=[1, 1, 1]), #subracting imagenet mean
+    tf.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], std=[0.225, 0.224, 0.229]), #subracting imagenet mean
     tf.Lambda(lambda x: x.mul_(255))
     ])
 
