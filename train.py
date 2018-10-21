@@ -22,7 +22,8 @@ style_layers = ['re11','re21','re31','re41','re51']
 #torch.manual_seed(random.randint(1, 10000))
 #if you want to run the program on cuda then
 torch.cuda.manual_seed_all(random.randint(1, 10000))
-os.makedirs("images/")
+if not os.path.exists("images/"):
+    os.makedirs("images/")
 #The below flag allows you to enable the cudnn auto-tuner
 #to find the best algorithm for your hardware
 cudnn.benchmark = True
@@ -30,7 +31,7 @@ cudnn.benchmark = True
 #Dataset Processing
 transform = tf.Compose([
     tf.Resize(512), #Default image_size
-    tf.ToTensor(),
+    tf.ToTensor(), #Transform it to a torch tensor
     tf.Lambda(lambda x:x[torch.LongTensor([2, 1,0])]), #Converting from RGB to BGR
     tf.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], std=[1, 1, 1]), #subracting imagenet mean
     tf.Lambda(lambda x: x.mul_(255))
@@ -44,18 +45,19 @@ def load_img(path):
 
 def save_img(img):
     post = tf.Compose([
-         tf.Lambda(la
-                   mbda x: x.mul_(1./255)),
+         tf.Lambda(lambda x: x.mul_(1./255)),
          tf.Normalize(mean=[-0.40760392, -0.45795686, -0.48501961], std=[1,1,1]),
          tf.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to RGB
          ])
     img = post(img)
     img = img.clamp_(0,1)
     tutils.save_image(img,
-                '%s/transfer.png' % (opt.outf),
+                '%s/transfer2.png' % ("./images"),
                 normalize=True)
     return
 
+style_img = "./QiBashi.jpg"
+content_img = "./2.jpg"
 styleImg = load_img(style_img)
 contentImg = load_img(content_img)
 
@@ -63,15 +65,16 @@ contentImg = load_img(content_img)
 styleImg = styleImg.cuda()
 contentImg = contentImg.cuda()
 
-vgg_directory = "" #path to pretrained vgg vgg_directory
+vgg_directory = "./vgg_conv.pth" #path to pretrained vgg vgg_directory
 vgg = VGG()
+#print(vgg.state_dict())
 vgg.load_state_dict(torch.load(vgg_directory))
 for param in vgg.parameters():
     param.requires_grad = False
 
 vgg.cuda() # Putting model on cuda
 
-def GramMatrix(nn.Module):
+class GramMatrix(nn.Module):
     def forward(self, input):
         b, c, h, w = input.size()
         f = input.view(b, c, h*w) #bxcx(hxw)
@@ -104,7 +107,9 @@ content_Losses = [nn.MSELoss()] * len(content_layers)
 losses = style_Losses + content_Losses
 targets = styleTargets + contentTargets
 loss_layers = style_layers + content_layers
-weights = 0.5 * len(style_layers) + 0.5 * len(content_layers)
+style_weight = 1000
+content_weight = 5
+weights = [style_weight] * len(style_layers) + [content_weight] * len(content_layers)
 
 optimImg = Variable(contentImg.data.clone(), requires_grad=True)
 optimizer = optim.LBFGS([optimImg])
@@ -115,7 +120,7 @@ for loss in losses:
 optimImg.cuda()
 
 # Training
-no_iter = 1000
+no_iter = 100
 
 for iteration in range(1, no_iter):
     print('Iteration [%d]/[%d]'%(iteration,no_iter))
@@ -134,4 +139,4 @@ for iteration in range(1, no_iter):
         return totalLoss
     optimizer.step(cl)
 outImg = optimImg.data[0].cpu()
-save_img(outImg.squeeze())    
+save_img(outImg.squeeze())
