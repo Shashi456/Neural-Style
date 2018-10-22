@@ -14,24 +14,37 @@ def normalize_batch(batch):
     batch = batch.div_(255.0)
     return (batch - mean) / std
 
-def load_img(path):
-    img = Image.open(path)
-    img = Variable(transform(img))
-    img = img.unsqueeze(0)
+# def load_img(path):
+#     img = Image.open(path)
+#     img = Variable(transform(img))
+#     img = img.unsqueeze(0)
+#     return img
+def load_image(filename, size=None, scale=None):
+    img = Image.open(filename)
+    if size is not None:
+        img = img.resize((size, size), Image.ANTIALIAS)
+    elif scale is not None:
+        img = img.resize((int(img.size[0] / scale), int(img.size[1] / scale)), Image.ANTIALIAS)
     return img
 
-def save_img(img):
-    post = tf.Compose([
-         tf.Lambda(lambda x: x.mul_(1./255)),
-         tf.Normalize(mean=[-0.40760392, -0.45795686, -0.48501961], std=[1,1,1]),
-         tf.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to RGB
-         ])
-    img = post(img)
-    img = img.clamp_(0,1)
-    tutils.save_image(img,
-                '%s/transfer2.png' % ("./images"),
-                normalize=True)
-    return
+# def save_img(img):
+#     post = tf.Compose([
+#          tf.Lambda(lambda x: x.mul_(1./255)),
+#          tf.Normalize(mean=[-0.40760392, -0.45795686, -0.48501961], std=[1,1,1]),
+#          tf.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to RGB
+#          ])
+#     img = post(img)
+#     img = img.clamp_(0,1)
+#     tutils.save_image(img,
+#                 '%s/transfer2.png' % ("./images"),
+#                 normalize=True)
+#     return
+
+def save_image(filename, data):
+    img = data.clone().clamp(0, 255).numpy()
+    img = img.transpose(1, 2, 0).astype("uint8")
+    img = Image.fromarray(img)
+    img.save(filename)  
 
 #Gram matrix for neural style different than fast neural style check.
 class GramMatrix(nn.Module):
