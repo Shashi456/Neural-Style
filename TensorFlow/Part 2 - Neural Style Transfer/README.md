@@ -4,13 +4,11 @@
 - TensorFlow
 - Python
 
-Orginal Paper : [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576)
-
 Medium article [link](https://medium.com/@pawsed)
 
 ### Training process
 
-To run : python style_transfer.py
+To run : ``` python style_transfer.py ```
 
 ```style_path``` & ```content_path```  Change them according to your content and style image paths. The vgg directory (i.e ```vgg_weights``` ) needs to include the weights which can be downloaded from [here](https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5).  The result will be stored has indicated by ```save_name``` variable.
 
