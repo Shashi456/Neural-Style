@@ -23,8 +23,6 @@ python train.py
 <img src="https://user-images.githubusercontent.com/18056781/45930320-463c3180-bf7c-11e8-916f-fd170540e37c.jpg" width="256"> <img src="https://user-images.githubusercontent.com/18056781/45930319-43d9d780-bf7c-11e8-9548-3b1a49abdb05.jpg" width="256" height="350"> <img src="https://user-images.githubusercontent.com/18056781/45930322-4b00e580-bf7c-11e8-90aa-4d3595fb0e40.png" width="256">
 
 -----------------------------------------
------------------------------------------
------------------------------------------
 
 ## TensorFlow
 
@@ -64,7 +62,6 @@ run_style_transfer(content_path, style_path, num_iterations=200, content_weight=
 
 ![example 1](https://user-images.githubusercontent.com/26245515/49684223-d0fde880-faf6-11e8-9137-f311b9433bf6.jpg)
 
------------------------------------------
 
 ![example 2](https://user-images.githubusercontent.com/26245515/49684224-d4916f80-faf6-11e8-8ec0-d9d2ad5c0a06.jpg)
 
