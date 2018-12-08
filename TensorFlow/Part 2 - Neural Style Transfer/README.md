@@ -38,5 +38,8 @@ run_style_transfer(content_path, style_path, num_iterations=500, content_weight=
 
 ### Following examples were trained on default settings
 ![example 1](https://user-images.githubusercontent.com/26245515/49684223-d0fde880-faf6-11e8-9137-f311b9433bf6.jpg)
+
+-----------------------------
+
 ![example 2](https://user-images.githubusercontent.com/26245515/49684224-d4916f80-faf6-11e8-8ec0-d9d2ad5c0a06.jpg)
 
