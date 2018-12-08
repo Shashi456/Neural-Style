@@ -32,7 +32,7 @@ By default number of iterations is set to 200, While content weight is set to 0.
 ```python
 
 # functions default definition
-run_style_transfer(content_path, style_path, num_iterations=500, content_weight=0.1, style_weight=0.9)
+run_style_transfer(content_path, style_path, num_iterations=200, content_weight=0.1, style_weight=0.9)
 
 ```
 
