@@ -18,16 +18,19 @@ num_content_layers = len(content_layers)
 num_style_layers = len(style_layers)
 
 # path where the content and style images are located
-content_path, style_path = 'content.jpg', 'style.jpg'
+content_path = 'content.jpg'
+style_path   = 'style.jpg'
 
 # Save the result as
-save_name = 'transfer.jpg'
+save_name = 'generated.jpg'
+
+# Vgg weights path
+vgg_weights = "vgg_weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5"
 
 # Using Keras Load VGG19 model
 def get_model(content_layers,style_layers):
 
   # Load our model. We load pretrained VGG, trained on imagenet data
-  # weights_path    = "vgg_weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5"
   vgg19           = VGG19(weights=None, include_top=False)
   vgg19.trainable = False
 
@@ -40,7 +43,7 @@ def get_model(content_layers,style_layers):
   return Model(inputs = vgg19.input, outputs = model_outputs),  vgg19
 
 
-def run_style_transfer(content_path, style_path, num_iterations=2000, content_weight=0.1, style_weight=0.9): 
+def run_style_transfer(content_path, style_path, num_iterations=200, content_weight=0.1, style_weight=0.9): 
 
   # Create a tensorflow session 
   sess = tf.Session()
@@ -84,7 +87,7 @@ def run_style_transfer(content_path, style_path, num_iterations=2000, content_we
   sess.run(generated_image.initializer)
   
   # loading the weights again because tf.global_variables_initializer() resets the weights
-  vgg19.load_weights("vgg_weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5")
+  vgg19.load_weights(vgg_weights)
 
 
   # Put loss as infinity before training starts and Create a variable to hold best image (i.e image with minimum loss)
@@ -95,7 +98,7 @@ def run_style_transfer(content_path, style_path, num_iterations=2000, content_we
     # Do optimization
     sess.run(opt)
 
-    # Make sure image values stays in the range of 0 and 255 
+    # Make sure image values stays in the range of max-min value of VGG norm 
     clipped = tf.clip_by_value(generated_image, min_vals, max_vals)
     # assign the clipped value to the tensor stylized image
     generated_image.assign(clipped)
@@ -116,7 +119,7 @@ def run_style_transfer(content_path, style_path, num_iterations=2000, content_we
 
 
 
-    # Save image after each 100 iterations 
+    # Save image after every 100 iterations 
     if (i+1)%100 == 0:
 
       # best_img is in an BGR format, and CV works with images in BGR hence no swapping of channel B and R are required here
@@ -127,6 +130,4 @@ def run_style_transfer(content_path, style_path, num_iterations=2000, content_we
       
   return best_img, best_loss
 
-
-num_iterations  = 1000
-best, best_loss = run_style_transfer(content_path, style_path, num_iterations=num_iterations)
+best, best_loss = run_style_transfer(content_path, style_path)

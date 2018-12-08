@@ -7,7 +7,6 @@ def get_content_loss(content, target):
   return tf.reduce_mean(tf.square(content - target)) /2
 
 
-
 ### Style Loss Fucntion
 def gram_matrix(input_tensor):
 
