@@ -7,9 +7,6 @@ from keras.applications.vgg19 import VGG19
 from keras.models import Model
 from keras import backend as K
 
-# This import is used to preprocess raw images to make it suitable to be used by VGG19 model
-from tensorflow.python.keras.preprocessing import image as kp_image
-
 # pillow is used for loading and saving images
 from PIL import Image
 
@@ -57,7 +54,8 @@ def load_img(path_to_img):
 
   # We need to broadcast the image array such that it has a batch dimension 
   img = np.expand_dims(img, axis=0)
-  
+
+  # preprocess raw images to make it suitable to be used by VGG19 model
   img = tf.keras.applications.vgg19.preprocess_input(img)
 
   return tf.convert_to_tensor(img)
