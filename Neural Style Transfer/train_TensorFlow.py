@@ -13,8 +13,10 @@ import cv2
 
 from loss import  compute_loss, get_feature_representations, gram_matrix
 
+##
+## Import completed
+##
 
-# Import completed
 content_layers = ['block3_conv3']
 style_layers   = ['block1_conv1','block2_conv2','block4_conv3']
 
