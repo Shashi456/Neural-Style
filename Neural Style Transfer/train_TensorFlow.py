@@ -1,7 +1,8 @@
 
 import tensorflow as tf
-from keras.applications.vgg19 import VGG19
 
+# Keras is only used to load VGG19 model
+from keras.applications.vgg19 import VGG19
 from keras.models import Model
 from keras import backend as K
 
@@ -10,9 +11,10 @@ from PIL import Image
 import numpy as np
 import cv2
 
-
 from loss import  compute_loss, get_feature_representations, gram_matrix
 
+
+# Import completed
 content_layers = ['block3_conv3']
 style_layers   = ['block1_conv1','block2_conv2','block4_conv3']
 
