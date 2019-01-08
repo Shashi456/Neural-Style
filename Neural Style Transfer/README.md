@@ -29,6 +29,7 @@ python train.py
 ### Prerequisites
 - TensorFlow
 - Python
+- Keras ( Only used to load VGG19 model )
 
 ### Training process
 
