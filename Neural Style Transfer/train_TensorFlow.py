@@ -1,27 +1,31 @@
 
+
 import tensorflow as tf
 
-# Keras is only used to load VGG19 model
+# Keras is only used to load VGG19 model as a high level API to TensorFlow 
 from keras.applications.vgg19 import VGG19
 from keras.models import Model
 from keras import backend as K
 
+# This import is used to preprocess raw images to make it suitable to be used by VGG19 model
 from tensorflow.python.keras.preprocessing import image as kp_image
+
+# pillow is used for loading and saving images
 from PIL import Image
+
+# numPy is used for manipulation of array of object i.e Image in our case
 import numpy as np
-import cv2
-
-from loss import  compute_loss, get_feature_representations, gram_matrix
 
 ##
-## Import completed
+##
 ##
 
+# list of layers to be considered for calculation of Content and Style Loss
 content_layers = ['block3_conv3']
 style_layers   = ['block1_conv1','block2_conv2','block4_conv3']
 
 num_content_layers = len(content_layers)
-num_style_layers = len(style_layers)
+num_style_layers   = len(style_layers)
 
 # path where the content and style images are located
 content_path = 'content.jpg'
@@ -30,7 +34,7 @@ style_path   = 'style.jpg'
 # Save the result as
 save_name = 'generated.jpg'
 
-# Vgg weights path
+# path to where Vgg19 model weight is located 
 vgg_weights = "vgg_weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5"
 
 
@@ -42,14 +46,14 @@ vgg_weights = "vgg_weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5"
 ############################################################################################################
 
 def load_img(path_to_img):
+
   max_dim  = 512
   img      = Image.open(path_to_img)
   img_size = max(img.size)
   scale    = max_dim/img_size
   img      = img.resize((round(img.size[0]*scale), round(img.size[1]*scale)), Image.ANTIALIAS)
 
-  
-  img      = kp_image.img_to_array(img)
+  img      = numpy.asarray(img)
 
   # We need to broadcast the image array such that it has a batch dimension 
   img = np.expand_dims(img, axis=0)
@@ -60,30 +64,17 @@ def load_img(path_to_img):
 
 def deprocess_img(processed_img):
   x = processed_img.copy()
-  if len(x.shape) == 4:
-    x = np.squeeze(x, 0)
-  assert len(x.shape) == 3, ("Input to deprocess image must be an image of "
-                             "dimension [1, height, width, channel] or [height, width, channel]")
-  if len(x.shape) != 3:
-    raise ValueError("Invalid input to deprocessing image")
   
   # perform the inverse of the preprocessiing step
   x[:, :, 0] += 103.939
   x[:, :, 1] += 116.779
   x[:, :, 2] += 123.68
 
-
+  x = x[:, :, ::-1]
 
   x = np.clip(x, 0, 255).astype('uint8')
+
   return x
-
-def image_show(img):
-  cv2.imshow('img',img)
-  cv2.waitKey(0)
-  cv2.destroyAllWindows()
-
-
-
 
 ############################################################################################################
 ############################################################################################################
@@ -168,10 +159,6 @@ def compute_loss(model, loss_weights, generated_output_activations, gram_style_f
 
   return loss, style_score, content_score
 
-
-
-
-
 ############################################################################################################
 ############################################################################################################
 #                                    CREATE STYLE TRANFER
@@ -184,12 +171,14 @@ def get_model(content_layers,style_layers):
 
   # Load our model. We load pretrained VGG, trained on imagenet data
   vgg19           = VGG19(weights=None, include_top=False)
+
+  # We don't need to (or want to) train any layers of our pre-trained vgg model, so we set it's trainable to false.
   vgg19.trainable = False
 
   style_model_outputs   =  [vgg19.get_layer(name).output for name in style_layers]
   content_model_outputs =  [vgg19.get_layer(name).output for name in content_layers]
   
-  model_outputs = content_model_outputs+ style_model_outputs
+  model_outputs = content_model_outputs + style_model_outputs
 
   # Build model 
   return Model(inputs = vgg19.input, outputs = model_outputs),  vgg19
@@ -199,14 +188,12 @@ def run_style_transfer(content_path, style_path, num_iterations=200, content_wei
 
   # Create a tensorflow session 
   sess = tf.Session()
-  K.set_session(sess) # Assign keras back-end to the TF session which we created
+
+  # Assign keras back-end to the TF session which we created
+  K.set_session(sess)
 
   model, vgg19 = get_model(content_layers,style_layers)
 
-  # We don't need to (or want to) train any layers of our pre-trained vgg model, so we set it's trainable to false. 
-  for layer in model.layers:
-    layer.trainable = False
-  
   # Get the style and content feature representations (from our specified intermediate layers) 
   style_features, content_features = get_feature_representations(model, content_path, style_path, num_content_layers)
   gram_style_features = [gram_matrix(style_feature) for style_feature in style_features]
@@ -262,6 +249,7 @@ def run_style_transfer(content_path, style_path, num_iterations=200, content_wei
 
 
     if total_loss < best_loss:
+
       # Update best loss and best image from total loss. 
       best_loss = total_loss
       best_img = deprocess_img(generated_image.eval(session=sess))
@@ -269,13 +257,10 @@ def run_style_transfer(content_path, style_path, num_iterations=200, content_wei
       # print best loss
       print('\nbest:      iteration: ',i,'   loss: ',total_loss,'  style_loss:    ', style_score.eval(session=sess),'  content_loss:    ',content_score.eval(session=sess),'\n')
 
-
-
     # Save image after every 100 iterations 
     if (i+1)%100 == 0:
-
-      # best_img is in an BGR format, and CV works with images in BGR hence no swapping of channel B and R are required here
-      cv2.imwrite(str(i+1)+'-'+save_name,best_img)
+      output = Image.fromarray(best_img)
+      output.save(str(i+1)+'-'+save_name)
 
   # after num_iterations iterations are completed, close the TF session 
   sess.close()
