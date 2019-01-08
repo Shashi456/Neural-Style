@@ -31,6 +31,14 @@ python train.py
 - Python
 - Keras ( Only used to load VGG19 model )
 
+Example to show case how easy it is to load VGG19 using Keras
+```python 
+from keras.applications.vgg19 import VGG19
+
+weights     = "vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5"
+vgg19_model = VGG19(weights=weights, include_top=False)
+```
+
 ### Training process
 
 To run : python style_transfer.py
