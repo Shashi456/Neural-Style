@@ -50,7 +50,7 @@ def load_img(path_to_img):
   scale    = max_dim/img_size
   img      = img.resize((round(img.size[0]*scale), round(img.size[1]*scale)), Image.ANTIALIAS)
 
-  img      = numpy.asarray(img)
+  img      = np.asarray(img)
 
   # We need to broadcast the image array such that it has a batch dimension 
   img = np.expand_dims(img, axis=0)
