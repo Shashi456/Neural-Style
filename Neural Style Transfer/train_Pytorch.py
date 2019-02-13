@@ -21,13 +21,7 @@ from vgg import VGG
 #### UTILS ####
 
 #Dataset Processing
-transform = tf.Compose([
-    tf.Resize(512), #Default image_size
-    tf.ToTensor(), #Transform it to a torch tensor
-    tf.Lambda(lambda x:x[torch.LongTensor([2, 1,0])]), #Converting from RGB to BGR
-    tf.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], std=[1, 1, 1]), #subracting imagenet mean
-    tf.Lambda(lambda x: x.mul_(255))
-    ])
+
 
 def normalize_batch(batch):
     # normalize using imagenet mean and std
@@ -35,28 +29,6 @@ def normalize_batch(batch):
     std = batch.new_tensor([0.229, 0.224, 0.225]).view(-1, 1, 1)
     batch = batch.div_(255.0)
     return (batch - mean) / std
-
- def load_img(path):
-
-
-     img = Image.open(path)
-     img = Variable(transform(img))
-     img = img.unsqueeze(0)
-     return img
-
-
- def save_img(img):
-     post = tf.Compose([
-         tf.Lambda(lambda x: x.mul_(1./255)),
-          tf.Normalize(mean=[-0.40760392, -0.45795686, -0.48501961], std=[1,1,1]),
-          tf.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to RGB
-          ])
-     img = post(img)
-     img = img.clamp_(0,1)
-     tutils.save_image(img,
-                 '%s/transfer2.png' % ("./images"),
-                 normalize=True)
-     return
 
 
 
