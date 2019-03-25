@@ -14,7 +14,7 @@ Medium article [link](https://medium.com/@pawsed)
 To run: change ```style_img```, ```content_img``` and ```vgg_directory``` locations. The vgg directory needs to include the weights which can be downloaded from [here](https://bethgelab.org/media/uploads/pytorch_models/vgg_conv.pth). The result will be stored in the ```images``` directory with the name ```transfer.png```. The ```style_weight```, ```content_weight``` and ```no_iter```(No of iterations) can be changed according to user preference
 
 ```
-python train.py
+python train_Pytorch.py
 ```
 > The following images were run with 0.5 weight for content and style and 100 iterations each.
 
@@ -41,7 +41,7 @@ vgg19_model = VGG19(weights=weights, include_top=False)
 
 ### Training process
 
-To run : python style_transfer.py
+To run : `python train_TensorFlow.py`
 
 ```style_path``` & ```content_path```  Change them according to your content and style image paths. The vgg directory (i.e ```vgg_weights``` ) needs to include the weights which can be downloaded from [here](https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5).  The result will be stored has indicated by ```save_name``` variable.
 
