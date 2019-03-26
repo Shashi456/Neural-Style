@@ -32,17 +32,6 @@ def normalize_batch(batch):
 
 
 
-#Gram matrix for neural style different than fast neural style check.
-class GramMatrix(nn.Module):
-    def forward(self, input):
-        b, c, h, w = input.size()
-        f = input.view(b, c, h*w) #bxcx(hxw)
-        # torch.bmm(batch1, batch2, out=None)
-        # batch1 : bxmxp, batch2 : bxpxn -> bxmxn
-        G = torch.bmm(f, f.transpose(1, 2)) # f: bxcx(hxw), f.transpose: bx(hxw)xc -> bxcxc
-        return G.div_(h*w)
-
-
 #### THE NETWORK ####
 
 #Writing the VGG network
