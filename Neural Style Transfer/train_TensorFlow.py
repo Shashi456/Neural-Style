@@ -250,10 +250,16 @@ def run_style_transfer(content_path, style_path, num_iterations=200, content_wei
 
       # Update best loss and best image from total loss. 
       best_loss = total_loss
-      best_img = deprocess_img(generated_image.eval(session=sess))
+
+      # generated image is of shape (1, h, w, 3) convert it to (h, w, 3)
+      temp_generated_image = sess.run(generated_image)[0]
+      best_img = deprocess_img(temp_generated_image)
+
+      s_loss = sess.run(style_score)
+      c_loss = sess.run(content_score)
 
       # print best loss
-      print('\nbest:      iteration: ',i,'   loss: ',total_loss,'  style_loss:    ', style_score.eval(session=sess),'  content_loss:    ',content_score.eval(session=sess),'\n')
+      print('best: iteration: ', i ,'loss: ', total_loss ,'  style_loss: ',  s_loss,'  content_loss: ', c_loss)
 
     # Save image after every 100 iterations 
     if (i+1)%100 == 0:
