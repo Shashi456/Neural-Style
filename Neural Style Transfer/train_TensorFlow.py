@@ -56,9 +56,9 @@ def load_img(path_to_img):
   img = np.expand_dims(img, axis=0)
 
   # preprocess raw images to make it suitable to be used by VGG19 model
-  img = tf.keras.applications.vgg19.preprocess_input(img)
+  out = tf.keras.applications.vgg19.preprocess_input(img)
 
-  return tf.convert_to_tensor(img)
+  return tf.convert_to_tensor(out)
 
 def deprocess_img(processed_img):
   x = processed_img.copy()
