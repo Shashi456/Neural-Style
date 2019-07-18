@@ -12,26 +12,24 @@ Given below, is what we have yet completed and what we hope to accomplish, The l
 
 ## TODO: 
 
-  3. Additional Tweaks of the original paper like [preserving color](https://arxiv.org/abs/1606.05897) and a few improvements on the original paper.
+  - [ ] Additional Tweaks of the original paper like [preserving color](https://arxiv.org/abs/1606.05897) and a few improvements on the original paper.
   
-  4. Masked Style Transfer
+  - [ ] Masked Style Transfer
   
-  5. Multiple Style Transfer.
+  - [ ] Multiple Style Transfer.
   
-  6. Texture Style Transfer 
+  - [ ] Texture Style Transfer 
   
-  7. Fast Neural Style Transfer
+  - [ ] Fast Neural Style Transfer
   
-  8. Neural Style Transfer for Facial Portraits, Images.
+  - [ ] Neural Style Transfer for Facial Portraits, Images.
   
-  9. Neural Doodle
+  - [ ] Neural Doodle
   
-  10. Video Style Transfer
+  - [ ] Video Style Transfer
   
-  11. Character Style Transfer 
+  - [ ] Character Style Transfer 
   
-  12. GAN style generation of art.
-  
-  
-  
-TODO : Adding Links of the Papers to be read
+  - [ ] GAN style generation of art.
+ 
+  - [ ] Adding Links of the Papers to be read
