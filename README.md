@@ -10,7 +10,7 @@ Given below, is what we have yet completed and what we hope to accomplish, The l
   2. [Implementation of Neural Style Transfer](https://towardsdatascience.com/neural-style-transfer-series-part-2-91baad306b24)
 
 
-## TODO: 
+## TODO
 
   - [ ] Additional Tweaks of the original paper like [preserving color](https://arxiv.org/abs/1606.05897) and a few improvements on the original paper.
   
