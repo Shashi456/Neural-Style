@@ -1,5 +1,5 @@
 # Neural Style Transfer 
-Neural Style is one attempt within deep learning to introduce a variety of art that can be created by Neural Networks. One style of this was introduced by Gatys et al in 2015 in the paper " A Neural Algorithm for Artistic Style", since then there has been a variety of attempts of introducing this style into other domains like photos, and designs.
+Neural Style is one attempt within deep learning to introduce a variety of art that can be created by Neural Networks. One style of this was introduced by Gatys et al in 2015 in the paper, "A Neural Algorithm for Artistic Style", since then there has been a variety of attempts of introducing this style into other domains like photos, and designs.
 
 One other paradigm which came out farely recently was by helena sarin who introduced art by the use of GANs. Because of our interest in the intersection of art and Deep Learning, we learn and blog about neural art in our free time. We hope to start at the original paper and make our way through the confluence of papers which have been published since 2015. We ultimately plan to reach the recent papers and approaches to neural art. 
 
