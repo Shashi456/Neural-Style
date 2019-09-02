@@ -31,5 +31,7 @@ Given below, is what we have yet completed and what we hope to accomplish, The l
   - [ ] Character Style Transfer 
   
   - [ ] GAN style generation of art.
+
+  - [ ] Comixify
  
   - [ ] Adding Links of the Papers to be read
