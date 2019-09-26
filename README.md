@@ -33,3 +33,5 @@ Given below, is what we have yet completed and what we hope to accomplish, The l
   - [ ] GAN style generation of art.
 
   - [ ] Comixify
+  
+  - [ ] Text Style Transfer
