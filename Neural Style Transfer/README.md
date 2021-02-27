@@ -20,7 +20,6 @@ python train_Pytorch.py
 
 <img src="https://user-images.githubusercontent.com/18056781/45930315-3de3f680-bf7c-11e8-84df-8d52938fb42c.jpg" width="256"> <img src="https://user-images.githubusercontent.com/18056781/45930317-3fadba00-bf7c-11e8-8b0a-8b8d956cd041.jpg" width="256"> <img src="https://user-images.githubusercontent.com/18056781/45930321-49372200-bf7c-11e8-9030-c31e9c9b8636.png" width="256">
 
-<img src="https://user-images.githubusercontent.com/18056781/45930320-463c3180-bf7c-11e8-916f-fd170540e37c.jpg" width="256"> <img src="https://user-images.githubusercontent.com/18056781/45930319-43d9d780-bf7c-11e8-9548-3b1a49abdb05.jpg" width="256" height="350"> <img src="https://user-images.githubusercontent.com/18056781/45930322-4b00e580-bf7c-11e8-90aa-4d3595fb0e40.png" width="256">
 
 -----------------------------------------
 
